@@ -1,10 +1,9 @@
 require('./connectorSetup.js')();
-var querystring = require('querystring');
 var https = require('https');
 var request = require('request');
 
 
-bot.dialog('showButtons', [
+bot.dialog('promptButtons', [
     (session) => {
         builder.Prompts.choice(session, "Pick one", ['Buy Stock', 'Sell Stock', 'Check Investment Status', 'Lookup Stock'], { listStyle: builder.ListStyle.button });
     },
@@ -26,7 +25,7 @@ bot.dialog('showButtons', [
     }
 ])
 
-bot.dialog("/buyStock"), [
+bot.dialog("/buyStock", [
     (session) => {
         builder.Prompts.text(session, "What stock (ticker symbol) would you like to buy?");
     },
@@ -55,7 +54,7 @@ bot.dialog("/buyStock"), [
             }
         }
     }
-]
+])
 
 let addStocks = (session, quantity) => {
     if (!session.privateConversationData.stocks)

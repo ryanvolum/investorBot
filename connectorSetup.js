@@ -10,10 +10,10 @@ module.exports = function () {
     });
 
     global.bot = new builder.UniversalBot(connector, function (session) {
-        if(!session.privateConversationData.stock){
-            session.privateConversationData.stock = 100000;
+        if (!session.privateConversationData.cash) {
+            session.privateConversationData.cash = 100000;
         }
-        session.send("Hey hey - I'm the investment bot. You've got " + session.privateConversationData.cash + " to spend!");
+        session.send("Hey hey - I'm the investment bot. You've got $" + numberWithCommas(session.privateConversationData.cash) + " to spend!");
         session.replaceDialog("promptButtons");
     });
 
@@ -25,4 +25,7 @@ module.exports = function () {
     server.post('/api/messages', connector.listen());
     bot.use(builder.Middleware.dialogVersion({ version: 0.2, resetCommand: /^reset/i }));
 
+    let numberWithCommas = (x) => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
 }
